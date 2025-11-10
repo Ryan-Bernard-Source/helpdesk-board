@@ -55,7 +55,6 @@ export default function Board() {
       !q || t.title.toLowerCase().includes(q) || t.description.toLowerCase().includes(q);
     return matchStatus && matchPriority && matchSearch;
   });
-
   // Queue logic
   const add = (id) => setQueue((q) => (q[id] ? q : { ...q, [id]: true }));
   const remove = (id) => {
@@ -64,34 +63,33 @@ export default function Board() {
     setQueue(next);
   };
   const clear = () => setQueue({});
-
   const queued = tickets.filter((t) => queue[t.id]);
-  // Render
-  return (
-    <div className="grid gap-6 lg:grid-cols-[2fr_1fr]">
-      <section>
-        <div className="flex flex-wrap gap-3 mb-4 p-3 border rounded">
-          <StatusFilter value={status} onChange={setStatus} />
-          <PriorityFilter value={priority} onChange={setPriority} />
-          <SearchBox value={search} onChange={setSearch} />
-        </div>
-        <StatusMessage
-          loading={loading}
-          error={error}
-          isEmpty={!loading && !error && visible.length === 0}
-        />
-        {!loading && !error && visible.length > 0 && (
-          <TicketList tickets={visible} queue={queue} onAddToQueue={add} />
-        )}
-      </section>
-      <aside>
+// Render
+    return (
+    <div className="flex flex-col gap-6">
+    <section>
+    <div className="flex flex-wrap gap-2 mb-3 p-2 border rounded">
+    <StatusFilter value={status} onChange={setStatus} />
+    <PriorityFilter value={priority} onChange={setPriority} />
+    <SearchBox value={search} onChange={setSearch} />
+    </div>
+    <StatusMessage
+    loading={loading}
+    error={error}
+    isEmpty={!loading && !error && visible.length === 0}
+    />
+    {!loading && !error && visible.length > 0 && (
+    <TicketList tickets={visible} queue={queue} onAddToQueue={add} />
+    )}
+    </section>
+    <div className="mt-6 p-4 border-t border-gray-300 bg-gray-50 rounded-lg shadow-sm text-black">
         <MyQueueSummary
-          tickets={queued}
-          count={queued.length}
-          onRemove={remove}
-          onClear={clear}
-        />
-      </aside>
+            tickets={queued}
+            count={queued.length}
+            onRemove={remove}
+            onClear={clear}
+                    />
+      </div>
     </div>
   );
 }

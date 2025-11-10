@@ -4,7 +4,7 @@ export async function GET() {
       id: 't-1000',
       title: 'Cannot connect to Wifi',
       description: 'User reports laptop Wi-Fi connectivity errors.',
-      priority: 'Low',
+      priority: 'Critical',
       status: 'Open',
       assignee: 'Unassigned',
       updatedAt: '2025-10-31T00:02:00Z'
