@@ -21,13 +21,19 @@ export default function Board() {
 
   // Fetch tickets from API
   useEffect(() => {
-    fetch('/api/tickets')
-      .then((res) => (res.ok ? res.json() : Promise.reject()))
-      .then(setTickets)
-      .catch(() => setError(true))
-      .finally(() => setLoading(false));
+    (async () => {
+      try {
+        const res = await fetch('/api/tickets');
+        if (!res.ok) throw new Error('Failed to fetch tickets');
+        const data = await res.json();
+        setTickets(data);
+      } catch {
+        setError(true);
+      } finally {
+        setLoading(false);
+      }
+    })();
   }, []);
-
   // Simulate live updates
   useEffect(() => {
     if (!tickets.length) return;
@@ -42,7 +48,7 @@ export default function Board() {
         list[i] = t;
         return list;
       });
-    }, 6000 + Math.random() * 4000);
+    }, 5000 + Math.random() * 5000);
     return () => clearInterval(interval);
   }, [tickets.length]);
 
